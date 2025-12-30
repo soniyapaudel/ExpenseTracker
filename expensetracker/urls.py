@@ -21,7 +21,7 @@ from home import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('', views.home, name='home'),
-    path('handlelogin/', views.handlelogin, name='handlelogin'),
-    path('index/', views.index, name='index'),
+    path('', views.index, name='index'), # Landing page
+    path('login/', views.login_page, name='login'),
+    path('register/', views.register, name='register'),
 ]

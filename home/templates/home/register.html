@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Register - Expense Tracker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            max-width: 90%;
+        }
+
+
+        .header h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #6a0dad;
+            /* purple title */
+        }
+
+        /* Error messages */
+        .header p {
+            text-align: center;
+            margin-top: 5px;
+            color: red;
+            font-size: 14px;
+        }
+
+        /* Input group styling */
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group .icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #555;
+        }
+
+        .input-group .eye-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+            color: #555;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 35px 10px 35px;
+            /* left padding for icon, right for eye */
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #6a0dad;
+            box-shadow: 0 0 5px rgba(106, 13, 218, 0.3);
+        }
+
+        /* Button styling */
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4a90e2;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #357ab8;
+        }
+
+        /* Footer link */
+        p.footer-text {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        p.footer-text a {
+            color: #4a90e2;
+            text-decoration: none;
+        }
+
+        p.footer-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="header">
+            <h1>Sign Up</h1>
+            {% if messages %}
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <form method="POST" action="/handleSignup/">
+            {% csrf_token %}
+
+            <!-- Name -->
+            <div class="input-group">
+                <span class="icon">&#128100;</span>
+                <input type="text" name="name" placeholder="Name" required maxlength="20">
+            </div>
+
+            <!-- Email -->
+            <div class="input-group">
+                <span class="icon">&#9993;</span>
+                <input type="email" name="email" placeholder="Email" required>
+            </div>
+
+            <!-- Phone -->
+            <div class="input-group">
+                <span class="icon">&#128222;</span>
+                <input type="tel" name="phone" placeholder="Mobile" required>
+            </div>
+
+            <!-- Password -->
+            <div class="input-group">
+                <span class="icon">&#128274;</span>
+                <input type="password" id="password" name="pass1" placeholder="Password" required>
+                <span class="eye-icon" onclick="togglePassword('password')">&#128065;</span>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="input-group">
+                <span class="icon">&#128274;</span>
+                <input type="password" id="confirm_password" name="pass2" placeholder="Confirm Password" required>
+                <span class="eye-icon" onclick="togglePassword('confirm_password')">&#128065;</span>
+            </div>
+
+            <button type="submit">Sign Up</button>
+        </form>
+
+        <p class="footer-text">
+            Already have an account? <a href="/login/">SIGN IN</a>
+        </p>
+    </div>
+
+    <script>
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            if (input.type === "password") {
+                input.type = "text";
+            } else {
+                input.type = "password";
+            }
+        }
+    </script>
+</body>
+
+</html>

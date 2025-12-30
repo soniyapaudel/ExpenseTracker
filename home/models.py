@@ -1,16 +1,22 @@
 from django.db import models
 from django.contrib.auth.models import User 
 from django.utils.timezone import now
-# Create your models here.
+
+
+# Category Choices
 SELECT_CATEGORY_CHOICES =[
-    ("Food", "Food"),
-    ("Travel", "Travel"),
+    ("Groceries", "Groceries"),
     ("Shopping", "Shopping"),
+    ("Rent", "Rent"),
+    ("Internet", "Internet"),
+    ("Savings", "Savings"),
+    ("Laundry", "Laundry"),
+    ("Outing", "Outing"),
     ("Necessities", "Necessities"),
-    ("Entertainment", "Entertainment"),
     ("Other", ("Other"))
 ]
 
+# Expense / Income
 ADD_EXPENSE_CHOICES =[ 
     ("Expense", "Expense"),
     ("Income", "Income")
@@ -23,16 +29,19 @@ PROFESSION_CHOICES =[
     ("Other", "Other")
 ]
 
+#---Add Expense ----
 class Addmoney_info(models.Model):
     user = models.ForeignKey(User, default =1, on_delete = models.CASCADE)
     add_money = models.CharField(max_length = 255, choices =ADD_EXPENSE_CHOICES)
     date = models.DateField(default = now)
-    quantity =models.BigIntegerField()
+    amount =models.BigIntegerField()
     category = models.CharField(max_length = 255, choices =SELECT_CATEGORY_CHOICES, default ='Food' )
-
+    description = models.CharField(max_length=255, default='', blank =True )
     class Meta:
         db_table = 'addmoney'
 
+    def __str__(self):
+        return f"{self.user.username} - {self.add_money} - {self.amount}"
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
