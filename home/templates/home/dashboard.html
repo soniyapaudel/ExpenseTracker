@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Dashboard</title>
+    <style>
+        .sidebar {
+            width: 250px;
+            background: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1)
+        }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            font-size: 20px;
+            font-weight: bold;
+
+        }
+
+        .profile {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .profile-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+        }
+
+        .profile-name {
+            color: #6677ea;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        .nav-item {
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .nav-item:hover {
+            background: #f5f5ff;
+            color: #667eea;
+        }
+
+        .nav-item.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .welcome-text {
+            font-size: 28px;
+            color: black;
+            font-weight: 600
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .balance-card {
+            background: rgba(255, 255, 255, o.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .balance-label {
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 10px;
+
+        }
+
+        .balance-amount {
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .card-number {
+            color: #999;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+        }
+
+        .card-logo {
+            width: 40px;
+            height: 25px;
+            background: inear-gradient(90deg, #eb001b 0%, #f79e1b 100%);
+            border-radius: 5px;
+        }
+
+        .income-section {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1)
+        }
+
+        .income-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+
+        }
+
+        .income-item {
+            text-align: center;
+
+        }
+
+        .income-label {
+            color: #999;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .income-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .income-value.positive {
+            color: #4caf50;
+
+        }
+
+        .income-value.negative {
+            color: #f44336;
+        }
+
+        .budget-bar {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .budget-item {
+            flex: 1;
+        }
+
+        .budget-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 5px;
+        }
+
+        .budget-amount {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo"> Your Money Heist</div>
+
+        <div class="profile">
+            <div class="profile-image">👤</div>
+            <div class="profile-name"> {{ username }}</div>
+        </div>
+
+
+        <div class="nav-menu">
+            <div class="nav-item">
+                <span class="nav-icon">📊</span>
+                <span>Dashboard</span>
+            </div>
+
+            <div class="nav-item">
+                <span class="nav-icon">💳</span>
+                <span>Transaction</span>
+            </div>
+
+            <div class="nav-item">
+                <span class="nav-icon">👛</span>
+                <span> Wallet</span>
+            </div>
+
+            <div class="nav-item">
+                <a href="{% url 'logout' %}"
+                    style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:15px;">
+                    <span class="nav-icon">🚪</span>
+                    <span>Sign Out</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="main-content">
+        <div class="header">
+            <h1 class="welcome-text"> Welcome back, {{ username }}!</h1>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="balance-card">
+                <div class="balance-label">Available Balance</div>
+                <div class="balance Amount"> {{ balance }}</div>
+                <div class="card-number">
+                    <span></span>
+                    <div class="card-logo"></div>
+
+                </div>
+            </div>
+
+            <div class="income-section">
+                <div class="income-header">
+                    <div class="income-item">
+                        <div class="income-label">Monthly Income</div>
+                        <div class="income-value positive"> {{ total_income }}</div>
+                    </div>
+                </div>
+
+
+                <div class="budget-bar">
+                    <div class="budget-item">
+                        <div class="budget-label">Monthly budget limit</div>
+                        <div class="budget-amount" style="color: #4caf50;"> {{ total_income }}</div>
+                        <div class="progress-bar">
+                            <div classs="progress-fill" style="width: 50%"></div>
+                        </div>
+                    </div>
+
+                    <div class="budget-item">
+                        <div class="budget-label"> Spent</div>
+                        <div class="budget-amount" style="color:red;">{{ total_expense}} </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="chart-section">
+            <div class="section-header">
+                <h2 class="section-title">Expenses Statistics</h2>
+                <select class="filter-btn">
+                    <option>Day</option>
+                    <option>Week</option>
+                    <option>Month</option>
+                    <option>Year</option>
+                </select>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="expenseChart"></canvas>
+            </div>
+        </div>
+
+        <div class="bottom-section">
+            <div class="payments-card">
+                <div class="section-header">
+                    <h2 class="section-title">Recent Payments</h2>
+                </div>
+
+                <div class="payment-item">
+                    <div class="payment-icon red">●</div>
+                    <div class="payment-details">
+                        <div class="payment-name">Daily Savings</div>
+                        <div class="payment-date"></div>
+                    </div>
+                    <div class="payment-amount negative"> - 2344</div>
+                </div>
+
+                <div class="payment-item">
+                    
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

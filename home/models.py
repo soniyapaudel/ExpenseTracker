@@ -22,12 +22,7 @@ ADD_EXPENSE_CHOICES =[
     ("Income", "Income")
 ]
 
-PROFESSION_CHOICES =[
-    ("Employee", "Employee"),
-    ("Business", "Business"),
-    ("Student", "Student"),
-    ("Other", "Other")
-]
+
 
 #---Add Expense ----
 class Addmoney_info(models.Model):
@@ -45,7 +40,6 @@ class Addmoney_info(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profession = models.CharField(max_length =255, choices= PROFESSION_CHOICES)
     savings = models.IntegerField(null =True, blank =True)
     income = models.BigIntegerField(null =True, blank =True)
     image = models.ImageField(upload_to='profile_image', blank =True)

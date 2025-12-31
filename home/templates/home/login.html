@@ -99,7 +99,7 @@
             {% endfor %}
             {% endif %}
 
-            <form method="POST" action="handlelogin/">
+            <form method="POST" action="{% url 'handlelogin' %}">
                 {% csrf_token %}
                 <label>Name:</label><br>
                 <input type="text" name="login_user_name" placeholder="Name" required><br> <br>
