@@ -7,6 +7,9 @@ from .models import Addmoney_info
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import UserProfile
+from datetime import datetime, timedelta
+import json 
+from django.db.models import Sum
 
 def index(request):
     return render(request, 'home/index.html')
@@ -105,6 +108,31 @@ def dashboard(request):
     user_expenses = Addmoney_info.objects.filter(user=user)
 
 
+        # get recent payments 
+
+    recent_payments  = Addmoney_info.objects.filter(
+        user = user,
+        add_money = 'Expense'
+    ).order_by('-date')[:5]
+
+
+    # get last 7 days p\of expense for chart
+
+    today = datetime.now().date()
+    last_7_days = [today - timedelta(days =i) for i in range(6, -1, -1)]
+
+    chart_labels = []
+    chart_data =[]
+
+    for day in last_7_days:
+        chart_labels.append(day.strftime('%b %d'))
+        daily_expense = Addmoney_info.objects.filter(
+            user =user,
+            add_money ='Expense',
+            date = day
+        ).aggregate(total=Sum('amount'))['total'] or 0 
+        chart_data.append(float(daily_expense))
+
     # calculate totals
 
     total_income = sum(exp.amount for exp in user_expenses if exp.add_money == 'Income')
@@ -119,9 +147,14 @@ def dashboard(request):
         'total_income': total_income,
         'total_expense': total_expense,
         'balance': balance,
+        'recent_payments': recent_payments,
+        'chart_labels': json.dumps(chart_labels),
+        'chart_data': json.dumps(chart_data)
     }
 
     return render(request, 'home/dashboard.html', context)
+
+  
         
 @login_required(login_url ='login')
 def handlelogout(request):
