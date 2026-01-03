@@ -27,5 +27,6 @@ urlpatterns = [
     path('handlelogin/', views.handlelogin, name='handlelogin' ),
     path('handleSignup/', views.handleSignup, name='handleSignup'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('addexpense/', views.addexpense, name='addexpense'),
     path('logout/', views.handlelogout, name='logout')
 ]

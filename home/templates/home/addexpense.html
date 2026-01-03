@@ -3,41 +3,316 @@
 
 <head>
     <title> Expenses </title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            font-size: 20px;
+            font-weight: bold;
+
+        }
+
+        .profile {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .profile-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+        }
+
+        .profile-name {
+            color: #6677ea;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: white;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5)
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        .nav-item {
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .nav-item:hover {
+            background: #f5f5ff;
+            color: #667eea;
+        }
+
+        .nav-item.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .context {
+
+
+            background: #ffffff;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+
+        }
+
+        .row.space-between {
+            justify-content: space-between;
+        }
+
+        .context h3 {
+            margin-bottom: 10px;
+            color: #6677ea;
+        }
+
+        .context h4 {
+            margin-bottom: 10px;
+            color: #6677ea;
+        }
+
+        .create-btn {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.35);
+            transition: all 0.25 ease;
+
+
+        }
+
+        .create-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(34, 197, 94, 0.5);
+
+        }
+
+        .hidden-form {
+            display: none;
+            margin-top: 20px;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .hidden-form input {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+
+        }
+
+        .hidden-form label {
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Add Expenses</h1>
-    {% if messages %}
-    {% for message in messages %}
-    <p style="color:red;">{{ message }}</p>
-    {% endfor %}
-    {% endif %}
+    <div class="addexpense">
+        <h1>Add Expenses</h1>
+        <!-- {% if messages %}
+        {% for message in messages %}
+        <p style="color:red;">{{ message }}</p>
+        {% endfor %}
+        {% endif %} -->
+        <div class="layout">
+            <div class="sidebar">
+                <div class="logo"> Your Money Heist</div>
+
+                <div class="profile">
+                    <div class="profile-image">👤</div>
+                    <div class="profile-name"> {{ username }}</div>
+                </div>
 
 
-    <form method="POST" action="/handleExpenses/">
-        {% csrf_token %}
-        <label> Amount:</label><br><br>
-        <input type="text" name="amount" inputmode="decimal" placeholder="0.0" required> <br><br>
+                <div class="nav-menu">
+                    <div class="nav-item">
+                        <span class="nav-icon">📊</span>
+                        <span>Dashboard</span>
+                    </div>
 
-        <label>Description:</label><br>
-        <input type="text" name="description" required><br><br>
+                    <div class="nav-item">
+                        <span class="nav-icon">💳</span>
+                        <span>Transaction</span>
+                    </div>
+
+                    <div class="nav-item">
+                        <a href=" {% url 'addexpense' %}"
+                            style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:15px;">
+                            <span class="nav-icon">👛</span>
+                            <span> Wallet</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <span class="nav-icon"></span>
+                        <span>History</span>
+                    </div>
+
+                    <div class="nav-item">
+                        <a href="{% url 'logout' %}"
+                            style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:15px;">
+                            <span class="nav-icon">🚪</span>
+                            <span>Sign Out</span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="context">
+                    <div class="row">
+                        <h3>My Wallet</h3><br><br>
+                    </div>
+                    <div class="row space-between">
+                        <h4>Add Expense or money</h4>
+                        <button id="showFormBtn" class="create-btn"> + </button>
+                    </div>
+                </div>
+                <div class="form">
+                    <form id="expenseForm" class="hidden-form" method="POST" action="{% url 'addexpense' %}">
+                        {% csrf_token %}
+
+                        <label>Type:</label>
+                        <select id="typeSelect" name="add_money" required>
+                            <option value="">Select Types</option>
+                            {% for key, value in ADD_EXPENSE_CHOICES %}
+                            <option value="{{ key}}"> {{ value}}</option>
+                            {% endfor %}
+                        </select> <br><br>
+                        <label> Amount:</label><br><br>
+                        <input type="text" name="amount" inputmode="decimal" placeholder="0.0" required> <br><br>
+
+                        <label>Description:</label><br>
+                        <input type="text" name="description" required><br><br>
 
 
-        <label for="category">Category:</label><br>
-        <select id="category" name="category" required>
-            <option value="Groceries">Groceries</option>
-            <option value="Transport">Transport</option>
-            <option value="Rent">Rent</option>
-            <option value="Entertainment">Entertainment</option>
-            <option value="Clothes">Clothes</option>
-            <option value="Others">Others</option>
-        </select><br><br>
+                        <label for="category">Category:</label><br>
+                        <select id="category" name="category" required>
+                            <option value="">Select Category</option>
+                            <!-- Option will be populate dynamically-->
+                        </select><br><br>
 
-        <label>Date:</label><br>
-        <input type="date" name="date" required><br><br>
+                        <label>Date:</label><br>
+                        <input type="date" name="date" required><br><br>
 
-        <button type="submit">Add Expense</button>
-    </form>
+                        <button type="submit" class="create-btn">Add Expense</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    {{ EXPENSE_CATEGORY_CHOICES|json_script:"expense-data" }}
+    {{ INCOME_CATEGORIES|json_script:"income-data" }}
+
+    <script>
+
+        const showFormBtn = document.getElementById("showFormBtn");
+        const expenseForm = document.getElementById("expenseForm");
+
+        showFormBtn.addEventListener("click", () => {
+            //toggle from visibility
+            if (expenseForm.style.display === "none" || expenseForm.style.display === "") {
+                expenseForm.style.display = "block";
+            } else {
+                expenseForm.style.display = "none";
+            }
+        });
+
+        // Dynamic form category choices---
+
+        const typeSelect = document.getElementById('typeSelect');
+        const categorySelect = document.getElementById('category');
+
+        // Expense and Income categories from Django context
+
+        const expenseCategories = JSON.parse(document.getElementById('expense-data').textContent);
+
+        const incomeCategories = JSON.parse(document.getElementById('income-data').textContent);
+
+        typeSelect.addEventListener('change', function () {
+            const categories = this.value === 'Expense' ? expenseCategories : incomeCategories;
+
+            categorySelect.innerHTML = '<option value="">Select Category</option>';
+
+            categories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat[0]; // if your tuples are like ["Groceries", "Groceries"]
+                option.textContent = cat[1];
+                categorySelect.appendChild(option);
+            });
+        });
+
+
+
+    </script>
 </body>
 
 </html>

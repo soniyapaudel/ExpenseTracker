@@ -4,11 +4,18 @@ from django.utils.timezone import now
 
 
 # Category Choices
-SELECT_CATEGORY_CHOICES =[
+
+# Expense / Income
+ADD_EXPENSE_CHOICES =[ 
+    ("Expense", "Expense"),
+    ("Income", "Income")
+]
+EXPENSE_CATEGORY_CHOICES =[
     ("Groceries", "Groceries"),
     ("Shopping", "Shopping"),
     ("Rent", "Rent"),
     ("Internet", "Internet"),
+    ("Medicines", "Medicines"),
     ("Savings", "Savings"),
     ("Laundry", "Laundry"),
     ("Outing", "Outing"),
@@ -16,13 +23,15 @@ SELECT_CATEGORY_CHOICES =[
     ("Other", ("Other"))
 ]
 
-# Expense / Income
-ADD_EXPENSE_CHOICES =[ 
-    ("Expense", "Expense"),
-    ("Income", "Income")
+
+
+INCOME_CATEGORIES =[
+    ("Salary", "Salary"),
+    ("Bonus","Bonus"),
+    ("Gift", "Gift"),
+    ("ROI", "ROI"),
+    ("Other", "Other")
 ]
-
-
 
 #---Add Expense ----
 class Addmoney_info(models.Model):
@@ -30,7 +39,7 @@ class Addmoney_info(models.Model):
     add_money = models.CharField(max_length = 255, choices =ADD_EXPENSE_CHOICES)
     date = models.DateField(default = now)
     amount =models.BigIntegerField()
-    category = models.CharField(max_length = 255, choices =SELECT_CATEGORY_CHOICES, default ='Food' )
+    category = models.CharField(max_length = 255, choices =EXPENSE_CATEGORY_CHOICES, default ='Food' )
     description = models.CharField(max_length=255, default='', blank =True )
     class Meta:
         db_table = 'addmoney'
@@ -46,3 +55,11 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username 
+
+
+def clean(self):
+    from django.core.exceptions import ValidationError
+    if self.add_money == "Expense" and self.category not in dict(EXPENSE_CATEGORY_CHOICES):
+        raise ValidationError("Select a valid expense Category")
+    elif self.add_money == "Income" and self.category not in dict(INCOME_CATEGORIES):
+        raise ValidationError("Select a valid income category")

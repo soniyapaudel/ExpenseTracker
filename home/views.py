@@ -10,6 +10,9 @@ from .models import UserProfile
 from datetime import datetime, timedelta
 import json 
 from django.db.models import Sum
+from .models import EXPENSE_CATEGORY_CHOICES, ADD_EXPENSE_CHOICES, INCOME_CATEGORIES
+
+
 
 def index(request):
     return render(request, 'home/index.html')
@@ -161,3 +164,35 @@ def handlelogout(request):
     logout(request)
     messages.success(request, "You have been logged out successfully.")
     return redirect('login')
+
+
+#---- Add Expense ----
+
+def addexpense(request):
+    if request.method == "POST":
+        user= request.user
+        add_money = request.POST.get("add_money")
+        amount = request.POST.get("amount")
+        category = request.POST.get("category")
+        description = request.POST.get("description")
+        date = request.POST.get("date")
+
+
+        Addmoney_info.objects.create(
+            user = user,
+            add_money =add_money,
+            amount = amount,
+            category = category,
+            description = description,
+            date = date
+        )
+        messages.success(request, f"{add_money} of Rs. {amount} added successfully!")
+        return redirect('addexpense')
+    
+    context = {
+        'EXPENSE_CATEGORY_CHOICES': EXPENSE_CATEGORY_CHOICES,
+        'ADD_EXPENSE_CHOICES': ADD_EXPENSE_CHOICES,
+        'INCOME_CATEGORIES': INCOME_CATEGORIES
+
+    }
+    return render(request, 'home/addexpense.html',context)
