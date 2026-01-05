@@ -39,7 +39,7 @@ class Addmoney_info(models.Model):
     add_money = models.CharField(max_length = 255, choices =ADD_EXPENSE_CHOICES)
     date = models.DateField(default = now)
     amount =models.BigIntegerField()
-    category = models.CharField(max_length = 255, choices =EXPENSE_CATEGORY_CHOICES, default ='Food' )
+    category = models.CharField(max_length = 255, default ='' )
     description = models.CharField(max_length=255, default='', blank =True )
     class Meta:
         db_table = 'addmoney'

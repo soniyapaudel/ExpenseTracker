@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from .models import UserProfile
 from datetime import datetime, timedelta
 import json 
+from django.utils.safestring import mark_safe
 from django.db.models import Sum
 from .models import EXPENSE_CATEGORY_CHOICES, ADD_EXPENSE_CHOICES, INCOME_CATEGORIES
 
@@ -93,7 +94,6 @@ def handlelogin(request):
             return redirect("login")
     return redirect('login')
 
-
 @login_required(login_url='login')
 def dashboard(request):
     user = request.user
@@ -156,9 +156,6 @@ def dashboard(request):
     }
 
     return render(request, 'home/dashboard.html', context)
-
-  
-        
 @login_required(login_url ='login')
 def handlelogout(request):
     logout(request)
@@ -187,7 +184,7 @@ def addexpense(request):
             date = date
         )
         messages.success(request, f"{add_money} of Rs. {amount} added successfully!")
-        return redirect('addexpense')
+        return redirect('wallet')
     
     context = {
         'EXPENSE_CATEGORY_CHOICES': EXPENSE_CATEGORY_CHOICES,
@@ -195,4 +192,4 @@ def addexpense(request):
         'INCOME_CATEGORIES': INCOME_CATEGORIES
 
     }
-    return render(request, 'home/addexpense.html',context)
+    return render(request, 'home/wallet.html',context)

@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Expenses </title>
+    <link rel="stylesheet" href="{% static 'home/css/wallet.css' %}">
+</head>
+
+<body>
+    <div class="deafult-navbar">
+        <!-- {% if messages %}
+        {% for message in messages %}
+        <p style="color:green;">{{ message }}</p>
+        {% endfor %}
+        {% endif %} -->
+    </div>
+    <div class="addexpense">
+
+
+        <div class="layout">
+            <div class="sidebar">
+                <div class="logo"> Your Money Heist</div>
+
+                <div class="profile">
+                    <div class="profile-image">👤</div>
+                    <div class="profile-name"> {{ username }}</div>
+                </div>
+
+
+                <div class="nav-menu">
+                    <div class="nav-item">
+                        <a href=" {% url 'dashboard' %}"
+                            style="text-decoration:none; color:inherit; display:flex; align-items:center; gap: 15px;">
+                            <span class="nav-icon">📊</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </div>
+
+                    <div class="nav-item">
+                        <span class="nav-icon">💳</span>
+                        <span>Transaction</span>
+                    </div>
+
+                    <div class="nav-item">
+                        <a href=" {% url 'addexpense' %}"
+                            style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:15px;">
+                            <span class="nav-icon">👛</span>
+                            <span> Wallet</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <span class="nav-icon">📜</span>
+                        <span>History</span>
+                    </div>
+
+                    <div class="nav-item">
+                        <a href="{% url 'logout' %}"
+                            style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:15px;">
+                            <span class="nav-icon">🚪</span>
+                            <span>Sign Out</span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="context">
+                    <div class="row">
+                        <h3>My Wallet</h3><br><br>
+                    </div>
+                    <div class="row space-between">
+                        <h4>Add Expense or money</h4>
+                        <button id="showFormBtn" class="create-btn"> + </button>
+                    </div>
+                </div>
+                <div class="form">
+                    <form id="expenseForm" class="hidden-form" method="POST" action="{% url 'addexpense' %}">
+                        {% csrf_token %}
+
+                        <label>Type:</label>
+                        <select id="typeSelect" name="add_money" required>
+                            <option value="">Select Types</option>
+                            {% for key, value in ADD_EXPENSE_CHOICES %}
+                            <option value="{{ key}}"> {{ value}}</option>
+                            {% endfor %}
+                        </select> <br><br>
+                        <label> Amount:</label><br><br>
+                        <input type="text" name="amount" inputmode="decimal" placeholder="0.0" required> <br><br>
+
+                        <label>Description:</label><br>
+                        <input type="text" name="description" required><br><br>
+
+
+                        <label for="category">Category:</label><br>
+                        <select id="category" name="category" required>
+                            <option value="">Select Category</option>
+                            <!-- Option will be populate dynamically-->
+                        </select><br><br>
+
+                        <label>Date:</label><br>
+                        <input type="date" name="date" required><br><br>
+
+                        <button type="submit" class="create-btn">Add Expense</button>
+                    </form>
+                </div>
+                <div class="table">
+                    <table id="expenseTable">
+                        <thead>
+                            <tr>
+                                <h4><i>What you Added</i> </h4>
+                                <th> Type</th>
+                                <th>Amount</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!--- Rows will be dynamically populated here from datbase data -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    {{ EXPENSE_CATEGORY_CHOICES|json_script:"expense-data" }}
+    {{ INCOME_CATEGORIES|json_script:"income-data" }}
+
+    <script src="{% static 'home/js/wallet.js' %}"></script>
+</body>
+
+</html>
