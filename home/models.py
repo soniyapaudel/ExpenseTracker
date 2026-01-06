@@ -57,9 +57,9 @@ class UserProfile(models.Model):
         return self.user.username 
 
 
-def clean(self):
-    from django.core.exceptions import ValidationError
-    if self.add_money == "Expense" and self.category not in dict(EXPENSE_CATEGORY_CHOICES):
-        raise ValidationError("Select a valid expense Category")
-    elif self.add_money == "Income" and self.category not in dict(INCOME_CATEGORIES):
-        raise ValidationError("Select a valid income category")
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        if self.add_money == "Expense" and self.category not in dict(EXPENSE_CATEGORY_CHOICES):
+            raise ValidationError("Select a valid expense Category")
+        elif self.add_money == "Income" and self.category not in dict(INCOME_CATEGORIES):
+            raise ValidationError("Select a valid income category")

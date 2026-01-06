@@ -164,15 +164,17 @@ def handlelogout(request):
 
 
 #---- Add Expense ----
-
+@login_required(login_url='login')
 def addexpense(request):
     if request.method == "POST":
         user= request.user
         add_money = request.POST.get("add_money")
-        amount = request.POST.get("amount")
+        amount = int(request.POST.get("amount"))
         category = request.POST.get("category")
         description = request.POST.get("description")
-        date = request.POST.get("date")
+        date_str = request.POST.get("date")
+
+        date = datetime.strptime(date_str, "%Y-%m-%d").date()
 
 
         Addmoney_info.objects.create(
